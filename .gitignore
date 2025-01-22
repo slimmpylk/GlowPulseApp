@@ -34,13 +34,22 @@ local.properties
 *.keystore
 !debug.keystore
 
-# node.js
+# React Native/Metro
 #
 node_modules/
 npm-debug.log
 yarn-error.log
+.expo/
+.expo-shared/
+.cache/
+dist/
+tmp/
+*.tsbuildinfo
+.metro-health-check*
+/coverage
+*.log
 
-# fastlane
+# Fastlane
 #
 # It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
 # screenshots whenever they are needed.
@@ -59,12 +68,6 @@ yarn-error.log
 **/Pods/
 /vendor/bundle/
 
-# Temporary files created by Metro to check the health of the file watcher
-.metro-health-check*
-
-# testing
-/coverage
-
 # Yarn
 .yarn/*
 !.yarn/patches
@@ -72,3 +75,48 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# APKs and generated files
+*.apk
+*.aab
+android/app/build/
+android/build/
+
+# iOS build artifacts
+ios/build/
+ios/Pods/
+ios/GlowPulseApp.xcworkspace/
+ios/*.xcuserdatad/
+ios/*.xcuserdata/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*.bak
+
+# IDE specific
+.vscode/
+*.code-workspace
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Generated Gradle files
+android/.gradle/
+android/app/intermediates/
+android/app/generated/
+android/app/outputs/
+
+# Test-related
+__tests__/
+*.spec.js
+*.spec.ts
+*.test.js
+*.test.ts
+.jest/
+
+# Miscellaneous
+Thumbs.db

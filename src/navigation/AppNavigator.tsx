@@ -1,18 +1,26 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../screens/HomeScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import Home from '../screens/HomeScreen'; // Main screen
+import HeartRateZones from '../screens/HeartRateZones'; // Heart rate zone configuration screen
 
-const Stack = createStackNavigator();
+// Define types for navigation params
+export type RootStackParamList = {
+  Home: undefined; // No params for Home screen
+  HeartRateZones: undefined; // No params for HeartRateZones screen
+};
 
-const AppNavigator = () => (
+const Stack = createStackNavigator<RootStackParamList>(); // Pass types here
+
+const App = () => {
+  return (
     <NavigationContainer>
-        <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Settings" component={SettingsScreen} />
-        </Stack.Navigator>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="HeartRateZones" component={HeartRateZones} />
+      </Stack.Navigator>
     </NavigationContainer>
-);
+  );
+};
 
-export default AppNavigator;
+export default App;
