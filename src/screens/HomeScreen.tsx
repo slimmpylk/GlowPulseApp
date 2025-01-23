@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert, ActivityIndi
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../navigation/AppNavigator'; // Import the param list type
+import { RootStackParamList } from '../navigation/AppNavigator';
 
 // Define the server URL
 const SERVER_URL = 'http://192.168.1.26:5000';
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#202020',
   },
   title: {
     fontSize: 24,

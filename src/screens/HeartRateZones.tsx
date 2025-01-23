@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Button, Alert } from 'react-native';
+import { View, Text, TextInput, ScrollView, StyleSheet, Button, Alert, FlatList } from 'react-native';
 import axios from 'axios';
 
 // Define the server URL
@@ -15,6 +15,13 @@ interface HeartRateZone {
 const HeartRateZones: React.FC = () => {
   const [hrMax, setHrMax] = useState<string>(''); // User input for max HR
   const [zones, setZones] = useState<HeartRateZone[]>([]); // Store calculated zones
+  const [customZones, setCustomZones] = useState<HeartRateZone[]>([
+    { zone: 'Zone 1', intensity: 'Very light', range: '' },
+    { zone: 'Zone 2', intensity: 'Light', range: '' },
+    { zone: 'Zone 3', intensity: 'Moderate', range: '' },
+    { zone: 'Zone 4', intensity: 'Hard', range: '' },
+    { zone: 'Zone 5', intensity: 'Maximum', range: '' },
+  ]);
 
   const calculateZones = () => {
     const maxHr = parseInt(hrMax, 10);
@@ -52,27 +59,71 @@ const HeartRateZones: React.FC = () => {
     }
   };
 
+  const handleZoneChange = (index: number, range: string) => {
+    const updatedZones = [...customZones];
+    updatedZones[index].range = range;
+    setCustomZones(updatedZones);
+  };
+
+  const submitCustomZones = async () => {
+    if (customZones.some((zone) => zone.range.trim() === '')) {
+      Alert.alert('Invalid Input', 'Please fill in all zone ranges.');
+      return;
+    }
+
+    sendZonesToServer(customZones);
+  };
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.title}>Heart Rate Zones</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your maximum heart rate"
-        keyboardType="numeric"
-        value={hrMax}
-        onChangeText={setHrMax}
-      />
-      <Button title="Calculate Zones" onPress={calculateZones} />
-      {zones.length > 0 && (
-        <View style={styles.zonesContainer}>
-          {zones.map((zone, index) => (
-            <View key={index} style={styles.zoneItem}>
-              <Text style={styles.zoneText}>{zone.zone} ({zone.intensity}): {zone.range}</Text>
+
+      {/* Calculate Zones Section */}
+      <View style={styles.section}>
+        <Text style={styles.subtitle}>Automatically Calculate Zones</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your maximum heart rate"
+          keyboardType="numeric"
+          value={hrMax}
+          onChangeText={setHrMax}
+        />
+        <Button title="Calculate Zones" onPress={calculateZones} />
+        {zones.length > 0 && (
+          <View style={styles.zonesContainer}>
+            <Text style={styles.subtitle}>Calculated Zones:</Text>
+            {zones.map((zone, index) => (
+              <View key={index} style={styles.zoneItem}>
+                <Text style={styles.zoneText}>{zone.zone} ({zone.intensity}): {zone.range}</Text>
+              </View>
+            ))}
+          </View>
+        )}
+      </View>
+
+      {/* Custom Zones Section */}
+      <View style={styles.section}>
+        <Text style={styles.subtitle}>Custom Zones</Text>
+        <FlatList
+          data={customZones}
+          keyExtractor={(item, index) => `${item.zone}-${index}`}
+          renderItem={({ item, index }) => (
+            <View style={styles.zoneItem}>
+              <Text style={styles.zoneText}>
+                {item.zone} ({item.intensity}):
+              </Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter range (e.g., 100–110 bpm)"
+                value={item.range}
+                onChangeText={(text) => handleZoneChange(index, text)}
+              />
             </View>
-          ))}
-        </View>
-      )}
-    </View>
+          )}
+        />
+        <Button title="Submit Custom Zones" onPress={submitCustomZones} />
+      </View>
+    </ScrollView>
   );
 };
 
@@ -88,12 +139,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
+  subtitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 20,
+    marginBottom: 10,
+  },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 10,
     borderRadius: 5,
-    marginBottom: 20,
+    marginBottom: 10,
     fontSize: 16,
   },
   zonesContainer: {
@@ -108,6 +165,9 @@ const styles = StyleSheet.create({
   },
   zoneText: {
     fontSize: 16,
+  },
+  section: {
+    marginBottom: 30,
   },
 });
 
