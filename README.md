@@ -21,7 +21,10 @@ GlowPulseApp is a mobile application that integrates with a Raspberry Pi server 
 
 ## VIDEO
 
-"is coming soon"
+
+
+https://github.com/user-attachments/assets/3d9e9fb1-fb7c-4b9c-84ad-400f813e706c
+
 
 ---
 
